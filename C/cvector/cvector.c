@@ -11,7 +11,7 @@ struct vector{
 	unsigned int size; /* memory size of vector */
 };
 
-void init_vector(struct vector **vec){
+void vector_init(struct vector **vec){
 	struct vector *retvec = malloc(sizeof(struct vector));
 	if(vec == NULL){
 		printf("unable to allocate memory\n");
@@ -23,13 +23,13 @@ void init_vector(struct vector **vec){
 	*vec = retvec;
 }
 
-void destroy_vector(struct vector* vec){
+void vector_destroy(struct vector* vec){
 	if(vec->values != NULL)
 		free(vec->values);
 	free(vec);
 }
 
-void add_vector(struct vector* vec,float val){
+void vector_add(struct vector* vec,float val){
 	/* if values are yet to be allocated */
 	if(vec == NULL){
 		printf("???\n");
@@ -47,7 +47,7 @@ void add_vector(struct vector* vec,float val){
 			vec->values = newspace;
 			vec->size += DELTA_LENGTH;
 		}else{
-			destroy_vector(vec);
+			vector_destroy(vec);
 			printf("Error reallocating memory when expanding\n");
 			exit(1);
 		}
@@ -55,7 +55,7 @@ void add_vector(struct vector* vec,float val){
 	vec->values[vec->next++] = val;
 }
 
-float pop_vector(struct vector* vec){
+float vector_pop(struct vector* vec){
 	if(vec->next > 0){
 		float retval = vec->values[--vec->next];
 		/* shrink values array if it is much larger than necessary */
@@ -66,7 +66,7 @@ float pop_vector(struct vector* vec){
 				vec->values = newspace;
 				vec->size -= DELTA_LENGTH;
 			}else{
-				destroy_vector(vec);
+				vector_destroy(vec);
 				printf("Erroy reallocating memory when shrinking\n");
 				exit(1);
 			}
@@ -78,7 +78,7 @@ float pop_vector(struct vector* vec){
 	}
 }
 
-void set_vector(struct vector* vec,float val, unsigned int index){
+void vector_set(struct vector* vec,float val, unsigned int index){
 	if(index >= vec->next){
 		printf("index out of range\n");
 		return;
@@ -87,7 +87,7 @@ void set_vector(struct vector* vec,float val, unsigned int index){
 	}
 }
 
-float get_vector(struct vector* vec,unsigned int index){
+float vector_get(struct vector* vec,unsigned int index){
 	if(index >= vec->next){
 		printf("index out of range, returning 0\n");
 		return 0;
@@ -96,7 +96,7 @@ float get_vector(struct vector* vec,unsigned int index){
 	}
 }
 
-void print_vector(struct vector* vec){
+void vector_print(struct vector* vec){
 	if(vec->next > 0){
 		unsigned int i;
 		printf("[");

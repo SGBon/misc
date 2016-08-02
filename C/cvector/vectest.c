@@ -3,21 +3,21 @@
 
 int main(){
 	struct vector *vec = NULL;
-	init_vector(&vec);
+	vector_init(&vec);
 
-	add_vector(vec,12.3);
-	add_vector(vec,2.4);
-	print_vector(vec);
+	vector_add(vec,12.3);
+	vector_add(vec,2.4);
+	vector_print(vec);
 
-	add_vector(vec,4.3);
-	add_vector(vec,8.5);
-	add_vector(vec,88.0);
-	print_vector(vec);
+	vector_add(vec,4.3);
+	vector_add(vec,8.5);
+	vector_add(vec,88.0);
+	vector_print(vec);
 
-	set_vector(vec,1.0,3);
-	printf("%f\n",get_vector(vec,3));
-	printf("%f\n",pop_vector(vec));
-	print_vector(vec);
+	vector_set(vec,1.0,3);
+	printf("%f\n",vector_get(vec,3));
+	printf("%f\n",vector_pop(vec));
+	vector_print(vec);
 
-	destroy_vector(vec);
+	vector_destroy(vec);
 }

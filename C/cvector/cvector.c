@@ -31,18 +31,13 @@ void vector_destroy(struct vector* vec){
 
 void vector_add(struct vector* vec,float val){
 	/* if values are yet to be allocated */
-	if(vec == NULL){
-		printf("???\n");
-		return;
-	}
 	if(vec->values == NULL){
 		vec->values = (float*) malloc(sizeof(float) * INITIAL_SIZE);
 		vec->size = INITIAL_SIZE;
 	}
 	/* if we need more space for values */
 	else if(vec->next == vec->size){
-		float* newspace = NULL;
-		newspace = (float*) realloc(vec->values,vec->size + DELTA_LENGTH);
+		float* newspace = (float*) realloc(vec->values,(vec->size + DELTA_LENGTH)*sizeof(float));
 		if(newspace != NULL){
 			vec->values = newspace;
 			vec->size += DELTA_LENGTH;
@@ -60,14 +55,13 @@ float vector_pop(struct vector* vec){
 		float retval = vec->values[--vec->next];
 		/* shrink values array if it is much larger than necessary */
 		if(vec->size > (vec->next + DELTA_LENGTH) && vec->size > DELTA_LENGTH){
-			float* newspace = NULL;
-			newspace = (float *) realloc(vec->values,vec->size - DELTA_LENGTH);
+			float* newspace = (float *) realloc(vec->values,(vec->size - DELTA_LENGTH)*sizeof(float));
 			if(newspace != NULL){
 				vec->values = newspace;
 				vec->size -= DELTA_LENGTH;
 			}else{
 				vector_destroy(vec);
-				printf("Erroy reallocating memory when shrinking\n");
+				printf("Error reallocating memory when shrinking\n");
 				exit(1);
 			}
 		}

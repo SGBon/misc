@@ -19,5 +19,15 @@ int main(){
 	printf("%f\n",vector_pop(vec));
 	vector_print(vec);
 
+	int i;
+	for(i = 0; i < 100; i++){
+		vector_add(vec,i*0.78);
+	}
+	vector_print(vec);
+	for(i = 0;i < 100;i++){
+		vector_pop(vec);
+	}
+	vector_print(vec);
+
 	vector_destroy(vec);
 }

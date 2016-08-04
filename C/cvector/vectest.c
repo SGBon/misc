@@ -30,4 +30,5 @@ int main(){
 	vector_print(vec);
 
 	vector_destroy(vec);
+	return 0;
 }

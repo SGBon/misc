@@ -17,4 +17,26 @@ struct hashtable_entry *find_end(struct hashtable_entry *root);
  */
 void clear_bin(struct hashtable_entry *root);
 
+/*
+ * Allocates dynamic memory for a hashtable_entry
+ * memory should be freed using ht_entry_destroy or
+ * manually
+ */
+struct hashtable_entry *ht_entry_create(void *key, size_t key_size, void *value, size_t value_size);
+
+/*
+ * free memory used up by entry
+ */
+void ht_entry_destroy(struct hashtable_entry* entry);
+
+/*
+ * for stopping program in case of error
+ */
+void raise_error(const char *errormsg);
+
+/*
+ * check if x is a power of two
+ */
+uint8_t isPow2 (size_t x);
+
 #endif // header guard

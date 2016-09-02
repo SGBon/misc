@@ -20,6 +20,16 @@ int main(){
     }
   }
 
+  /* test overwriting */
+  {
+    int key = 3;
+    int value = 20;
+    int ret = 0;
+    hashtable_set(&ht,&key,&value);
+    hashtable_get(&ht,&key,&ret);
+    printf("%d -> %d\n",key,ret);
+  }
+
   hashtable_destroy(&ht);
 
   return 0;

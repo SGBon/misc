@@ -41,5 +41,5 @@ enum HT_PUB_FLAGS hashtable_get(struct hashtable *ht, void *key, void *retval);
 /*
  * Remove entry from hashtable matching the key
  */
-struct hashtable_entry hashtable_remove(struct hashtable *ht, void *key);
+void hashtable_remove(struct hashtable *ht, void *key);
 #endif // header guard

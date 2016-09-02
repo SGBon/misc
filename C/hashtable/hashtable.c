@@ -11,14 +11,7 @@ enum HT_BIN_METHODS{
   HT_BM_MASK // bit mask
 };
 
-/* elegant solution for determining if a number is a power of two, found on
- http://www.exploringbinary.com/ten-ways-to-check-if-an-integer-is-a-power-of-two-in-c/ */
-uint8_t isPow2 (size_t x) {
-  return ((x != 0) && !(x & (x - 1)));
-}
-
 enum HT_PUB_FLAGS hashtable_init(struct hashtable *ht, size_t length, size_t key_size, size_t value_size){
-
   ht->length = length;
   ht->key_size = key_size;
   ht->value_size = value_size;
@@ -40,21 +33,19 @@ void hashtable_set(struct hashtable *ht, void *key, void *value){
   uint64_t bin = (ht->bin_method == HT_BM_MASK) ?
   (hash & (ht->length - 1)) : (hash % ht->length);
 
-  /* new entry to put into table */
-  struct hashtable_entry* newentry = malloc(sizeof(struct hashtable_entry));
-  newentry->key = malloc(ht->key_size);
-  newentry->value = malloc(ht->value_size);
-  newentry->next = NULL;
-
-  memcpy(newentry->key,key,ht->key_size);
-  memcpy(newentry->value,value,ht->value_size);
-
   /* if there was no collision, assign it to the first point */
   if(!ht->bins[bin]){
-    ht->bins[bin] = newentry;
+    ht->bins[bin] = ht_entry_create(key,ht->key_size,value,ht->value_size);
   }else{
-    struct hashtable_entry *last = find_end(ht->bins[bin]);
-    last->next = newentry;
+    /* first check if key is already in table */
+    struct hashtable_entry *possible = find_entry(ht->bins[bin],key,ht->key_size);
+    if(possible){
+      /* overwrite the value */
+      memcpy(possible->value,value,ht->value_size);
+    }else{
+      struct hashtable_entry *last = find_end(ht->bins[bin]);
+      last->next = ht_entry_create(key,ht->key_size,value,ht->value_size);
+    }
   }
 }
 

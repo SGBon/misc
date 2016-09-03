@@ -71,7 +71,6 @@ enum HT_PUB_FLAGS hashtable_get(struct hashtable *ht, void *key, void *retval){
   }
 }
 
-
 void hashtable_remove(struct hashtable *ht, void *key){
   uint64_t hash = fnv_hash(key,ht->key_size);
   uint64_t bin = (ht->bin_method == HT_BM_MASK) ?

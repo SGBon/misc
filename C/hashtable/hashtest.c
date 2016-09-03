@@ -17,6 +17,7 @@ int main(){
     hashtable_remove(&ht,&key);
   }
 
+  /* test value retrieval */
   for(int i = 0; i < 20; i++){
     int value = 0;
     if(hashtable_get(&ht,&i,&value) == HT_KEY_NOT_FOUND){

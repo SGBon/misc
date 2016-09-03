@@ -1,6 +1,6 @@
 CC=gcc
-CFLAGS=-c -Wall -Wextra
-LDFLAGS=
+CFLAGS=-c -Wall -Wextra -O3
+LDFLAGS=-O3
 SOURCES=fnvhash.c hashtable.c htutil.c hashtest.c
 OBJECTS=$(SOURCES:.c=.o)
 EXECUTABLE=hashtest

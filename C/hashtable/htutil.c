@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-struct hashtable_entry *find_entry(struct hashtable_entry *root, void* key, size_t key_size){
+struct hashtable_entry *find_entry(struct hashtable_entry *root, void *key, size_t key_size){
   struct hashtable_entry *current = root;
   char* first = key;
   char* second = NULL;
@@ -18,7 +18,7 @@ struct hashtable_entry *find_entry(struct hashtable_entry *root, void* key, size
   return NULL;
 }
 
-struct hashtable_entry *find_end(struct hashtable_entry* root){
+struct hashtable_entry *find_end(struct hashtable_entry *root){
   struct hashtable_entry *current = root->next;
   /* base case, root is last element */
   if(current == NULL)
@@ -26,6 +26,18 @@ struct hashtable_entry *find_end(struct hashtable_entry* root){
 
   /* run through linked list until next is NULL, meaning we are at end */
   while(current->next){
+    current = current->next;
+  }
+  return current;
+}
+
+struct hashtable_entry *find_prev(struct hashtable_entry *root, struct hashtable_entry *entry){
+  /* safety check */
+  if(!root->next || root == entry)
+    return NULL;
+
+  struct hashtable_entry *current = root;
+  while(current->next != entry){
     current = current->next;
   }
   return current;

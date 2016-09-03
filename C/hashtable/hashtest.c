@@ -11,6 +11,12 @@ int main(){
     hashtable_set(&ht,&i,&value);
   }
 
+  /* test remove */
+  {
+    int key = 5;
+    hashtable_remove(&ht,&key);
+  }
+
   for(int i = 0; i < 20; i++){
     int value = 0;
     if(hashtable_get(&ht,&i,&value) == HT_KEY_NOT_FOUND){

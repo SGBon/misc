@@ -28,6 +28,14 @@ enum HT_PUB_FLAGS hashtable_init(struct hashtable *ht, size_t length, size_t key
   return HT_SUCCESS;
 }
 
+void hashtable_destroy(struct hashtable *ht){
+  for(size_t i = 0; i < ht->length;i++){
+    clear_bin(ht->bins[i]);
+    ht->bins[i] = NULL;
+  }
+  free(ht->bins);
+}
+
 void hashtable_set(struct hashtable *ht, void *key, void *value){
   uint64_t hash = fnv_hash(key,ht->key_size);
   uint64_t bin = (ht->bin_method == HT_BM_MASK) ?
@@ -63,9 +71,19 @@ enum HT_PUB_FLAGS hashtable_get(struct hashtable *ht, void *key, void *retval){
   }
 }
 
-void hashtable_destroy(struct hashtable *ht){
-  for(size_t i = 0; i < ht->length;i++){
-    clear_bin(ht->bins[i]);
+
+void hashtable_remove(struct hashtable *ht, void *key){
+  uint64_t hash = fnv_hash(key,ht->key_size);
+  uint64_t bin = (ht->bin_method == HT_BM_MASK) ?
+  (hash & (ht->length - 1)) : (hash % ht->length);
+
+  struct hashtable_entry *toremove = find_entry(ht->bins[bin],key,ht->key_size);
+  /* if there is more than one entry in bin */
+  if(toremove != ht->bins[bin]){
+    struct hashtable_entry *prev = find_prev(ht->bins[bin],toremove);
+    struct hashtable_entry *next = toremove->next;
+    prev->next = next;
   }
-  free(ht->bins);
+  ht_entry_destroy(toremove);
+  ht->bins[bin] = NULL;
 }

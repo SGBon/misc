@@ -13,6 +13,11 @@ struct hashtable_entry *find_entry(struct hashtable_entry *root, void* key, size
 struct hashtable_entry *find_end(struct hashtable_entry *root);
 
 /*
+ * get element previous to the entry
+ */
+struct hashtable_entry *find_prev(struct hashtable_entry *root, struct hashtable_entry *prev);
+
+/*
  * free memory used up by bin, including root
  */
 void clear_bin(struct hashtable_entry *root);

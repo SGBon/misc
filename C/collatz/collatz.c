@@ -1,42 +1,36 @@
 #include <stdio.h>
 #include <hashtable.h>
+#include "helper.h"
 
 int main(void){
-  struct hashtable ht;
+  /* yeah, I made a hashmap to use it like a tree */
+  struct hashtable collatz_tree;
 
-  hashtable_init(&ht,1024,sizeof(int),sizeof(int));
+  /* 2^16 buckets */
+  hashtable_init(&collatz_tree,0x1000,sizeof(uint64_t),sizeof(uint64_t));
 
-  for(int i = 0; i < 20;i++){
-    int value = i * 2;
-    hashtable_set(&ht,&i,&value);
-  }
+  /* let's try the numbers 1-500 for now */
+  for(uint64_t i = 1; i < 20; i++){
+    uint64_t value;
+    enum HT_PUB_FLAGS state;
+    state = hashtable_get(&collatz_tree,&i,&value);
+    uint64_t nextkey = i;
+    /* we haven't computed here yet */
+    while(state == HT_KEY_NOT_FOUND){
+      uint64_t nextval = compute_collatz(nextkey);
+      hashtable_set(&collatz_tree,&nextkey,&nextval);
 
-  /* test remove */
-  {
-    int key = 5;
-    hashtable_remove(&ht,&key);
-  }
-
-  /* test value retrieval */
-  for(int i = 0; i < 20; i++){
-    int value = 0;
-    if(hashtable_get(&ht,&i,&value) == HT_KEY_NOT_FOUND){
-      printf("Key not found\n");
-    }else{
-      printf("%d -> %d\n",i,value);
+      nextkey = nextval;
+      state = hashtable_get(&collatz_tree,&nextkey,&value);
     }
   }
 
-  /* test overwriting */
-  {
-    int key = 3;
-    int value = 20;
-    int ret = 0;
-    hashtable_set(&ht,&key,&value);
-    hashtable_get(&ht,&key,&ret);
-    printf("%d -> %d\n",key,ret);
+/*
+  for(uint64_t i = 1; i < 1000000; i++){
+    print_sequence(&collatz_tree,i);
   }
+*/
+  hashtable_destroy(&collatz_tree);
 
-  hashtable_destroy(&ht);
   return 0;
 }

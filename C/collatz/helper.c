@@ -1,8 +1,18 @@
 #include <stdio.h>
 #include "helper.h"
 
-uint64_t compute_collatz(uint64_t n){
-  return ((n & 1u) ? (3*n + 1) : (n/2));
+uint64_t compute_collatz(const uint64_t n){
+  uint64_t retval = 0;
+  if(n & 1){
+    retval = 3*n + 1;
+    /* handle unsigned overflow for multiplication */
+    if(retval < n){
+      return 0;
+    }
+  }else{
+    retval = n/2;
+  }
+  return retval;
 }
 
 void print_sequence(struct hashtable *ht, uint64_t num){
@@ -11,7 +21,7 @@ void print_sequence(struct hashtable *ht, uint64_t num){
   uint64_t nextval = 0;
   uint8_t firsttime = 1;
 
-  /* quit when we hit 1 */
+  /* quit when we hit 1, 0 is overflow case */
   while(nextval != 1){
     state = hashtable_get(ht,&nextkey,&nextval);
     if(state == HT_KEY_NOT_FOUND){

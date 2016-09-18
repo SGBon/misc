@@ -59,7 +59,6 @@ void clear_bin(struct hashtable_entry *root){
     if(tofree == root)
       break;
     tofree = find_prev(root,tofree);
-    tofree->next = NULL;
   }
 }
 

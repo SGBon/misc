@@ -9,8 +9,8 @@ int main(void){
   /* 2^16 buckets */
   hashtable_init(&collatz_tree,0x1000,sizeof(uint64_t),sizeof(uint64_t));
 
-  /* let's try the numbers 1-500 for now */
-  for(uint64_t i = 1; i < 20; i++){
+  /* let's start from some basis point */
+  for(uint64_t i = 1; i < 10000; i++){
     uint64_t value;
     enum HT_PUB_FLAGS state;
     state = hashtable_get(&collatz_tree,&i,&value);
@@ -25,11 +25,10 @@ int main(void){
     }
   }
 
-/*
   for(uint64_t i = 1; i < 1000000; i++){
     print_sequence(&collatz_tree,i);
   }
-*/
+
   hashtable_destroy(&collatz_tree);
 
   return 0;

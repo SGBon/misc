@@ -48,17 +48,19 @@ void clear_bin(struct hashtable_entry *root){
   if(!root)
     return;
 
-  struct hashtable_entry *tofree;
+  struct hashtable_entry *tofree = find_end(root);
   /*
   * keep grabbing last element in linked list
   * and free the memory it takes until only root element is left
   * what is this, like O(n^2 - n) ???
   */
-  while((tofree = find_end(root)) != root){
+  while(tofree){
     ht_entry_destroy(tofree);
+    if(tofree == root)
+      break;
+    tofree = find_prev(root,tofree);
+    tofree->next = NULL;
   }
-  /* free root element */
-  ht_entry_destroy(root);
 }
 
 struct hashtable_entry *ht_entry_create(void *key, size_t key_size, void *value, size_t value_size){
@@ -82,9 +84,11 @@ struct hashtable_entry *ht_entry_create(void *key, size_t key_size, void *value,
 }
 
 void ht_entry_destroy(struct hashtable_entry* entry){
-  free(entry->key);
-  free(entry->value);
-  free(entry);
+  if(entry){
+    free(entry->key);
+    free(entry->value);
+    free(entry);
+  }
 }
 
 void raise_error(const char *errormsg){

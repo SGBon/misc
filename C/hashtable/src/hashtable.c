@@ -29,6 +29,9 @@ enum HT_PUB_FLAGS hashtable_init(struct hashtable *ht, size_t length, size_t key
 }
 
 void hashtable_destroy(struct hashtable *ht){
+  if(!ht)
+    return;
+
   for(size_t i = 0; i < ht->length;i++){
     clear_bin(ht->bins[i]);
     ht->bins[i] = NULL;
@@ -78,11 +81,12 @@ void hashtable_remove(struct hashtable *ht, void *key){
 
   struct hashtable_entry *toremove = find_entry(ht->bins[bin],key,ht->key_size);
   /* if there is more than one entry in bin */
-  if(toremove != ht->bins[bin]){
-    struct hashtable_entry *prev = find_prev(ht->bins[bin],toremove);
-    struct hashtable_entry *next = toremove->next;
-    prev->next = next;
+  if(toremove){
+    if(toremove != ht->bins[bin]){
+      struct hashtable_entry *prev = find_prev(ht->bins[bin],toremove);
+      struct hashtable_entry *next = toremove->next;
+      prev->next = next;
+    }
+    ht_entry_destroy(toremove);
   }
-  ht_entry_destroy(toremove);
-  ht->bins[bin] = NULL;
 }

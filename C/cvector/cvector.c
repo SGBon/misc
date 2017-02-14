@@ -5,12 +5,6 @@
 #define INITIAL_SIZE 20 /* initial size of vector */
 #define DELTA_LENGTH 10 /* amount of memory space to add or remove when resizing */
 
-struct vector{
-	float *values; /* elements in vector */
-	unsigned int next; /* index to next space in vector after last element */
-	unsigned int size; /* memory size of vector */
-};
-
 void vector_init(struct vector **vec){
 	struct vector *retvec = malloc(sizeof(struct vector));
 	if(vec == NULL){
@@ -95,7 +89,7 @@ void vector_print(struct vector* vec){
 		unsigned int i;
 		printf("[");
 		for(i = 0;i<vec->next;i++)
-			printf("%f%c ",vec->values[i],(i<vec->next-1 ? 'c' : ']'));
+			printf("%f%c ",vec->values[i],(i<vec->next-1 ? ',' : ']'));
 		printf("\n");
 	}else{
 		printf("Could not print vector: Vector is empty\n");

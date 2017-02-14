@@ -2,7 +2,11 @@
 #define CVECTOR_H
 /* a c++ like vector for floating points written in C */
 
-struct vector;
+struct vector{
+	float *values; /* elements in vector */
+	unsigned int next; /* index to next space in vector after last element */
+	unsigned int size; /* memory size of vector */
+};
 
 /* initialize the vector */
 void vector_init(struct vector**);

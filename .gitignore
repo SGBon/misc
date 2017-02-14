@@ -1,8 +1,11 @@
 *
 !/**/
 !*.*
+!Makefile
+!makefile
 a.out
 *.o
 *.so
 build/
 .clang_complete
+.depend

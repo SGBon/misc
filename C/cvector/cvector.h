@@ -1,21 +1,21 @@
 #ifndef CVECTOR_H
 #define CVECTOR_H
 #include <stddef.h>
-#include <stdint.h>
 
 /* a c++ like vector for floating points written in C */
+struct vector{
+	void *values; /* elements in vector */
+	size_t next; /* index to next space in vector after last element */
+	size_t size; /* size of vector */
+	size_t value_size; /* size of single element in vector */
+};
 
 enum vector_ret_state{
 	VECTOR_RET_FAIL,
 	VECTOR_RET_SUCCESS
 };
 
-struct vector{
-	void *values; /* elements in vector */
-	size_t next; /* index to next space in vector after last element */
-	size_t size; /* size of vector */
-	size_t value_size;
-};
+#define VECTOR_CREATE(vec,type) vector_init(vec,sizeof(type));
 
 /* initialize the vector */
 void vector_init(struct vector *vec, size_t value_size);

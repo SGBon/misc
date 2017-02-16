@@ -3,7 +3,10 @@
 
 int main(){
 	struct vector vec;
-	vector_init(&vec, sizeof(float));
+	/* can make vector like this */
+	//vector_init(&vec, sizeof(float));
+	/* or like this */
+	VECTOR_CREATE(&vec,float);
 
 	float r = 12.3f;
 	vector_add(&vec,&r);

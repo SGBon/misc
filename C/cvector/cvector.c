@@ -84,15 +84,3 @@ enum vector_ret_state vector_get(struct vector* vec, size_t index, void *retval)
 		return VECTOR_RET_SUCCESS;
 	}
 }
-
-void vector_print(struct vector* vec){
-	if(vec->next > 0){
-		unsigned int i;
-		printf("[");
-		for(i = 0;i<vec->next;i++)
-			printf("%f%c ",vec->values[i],(i<vec->next-1 ? ',' : ']'));
-		printf("\n");
-	}else{
-		printf("Could not print vector: Vector is empty\n");
-	}
-}

@@ -1,32 +1,39 @@
 #ifndef CVECTOR_H
 #define CVECTOR_H
+#include <stddef.h>
+#include <stdint.h>
+
 /* a c++ like vector for floating points written in C */
 
+enum vector_ret_state{
+	VECTOR_RET_FAIL,
+	VECTOR_RET_SUCCESS
+};
+
 struct vector{
-	float *values; /* elements in vector */
-	unsigned int next; /* index to next space in vector after last element */
-	unsigned int size; /* memory size of vector */
+	void *values; /* elements in vector */
+	size_t next; /* index to next space in vector after last element */
+	size_t size; /* size of vector */
+	size_t value_size;
 };
 
 /* initialize the vector */
-void vector_init(struct vector**);
+void vector_init(struct vector *vec, size_t value_size);
 
 /* free the memory used by the vector */
-void vector_destroy(struct vector*);
+void vector_destroy(struct vector *vec);
 
 /* adds element to end of vector */
-void vector_add(struct vector* , float);
+void vector_add(struct vector *vec, void *val);
 
 /* removes and returns the last element
 returns 0 if vector is empty */
-float vector_pop(struct vector*);
+enum vector_ret_state vector_pop(struct vector*, void *retval);
 
 /* set element at index to value */
-void vector_set(struct vector*,float,unsigned int);
+void vector_set(struct vector *vec, void *val, size_t index);
 
 /* get element at index */
-float vector_get(struct vector*,unsigned int);
+enum vector_ret_state vector_get(struct vector *vec, size_t index, void *retval);
 
-/* print contents of vector */
-void vector_print(struct vector*);
 #endif
